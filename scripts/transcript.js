@@ -1,6 +1,6 @@
 (function ($) {
 
-	AblePlayer.prototype.setupTranscript = function() {
+	AblePlayer.prototype.setupTranscript = function () {
 
 		var deferred = new $.Deferred();
 		var promise = deferred.promise();
@@ -18,8 +18,8 @@
 
 		if (this.transcriptType) {
 			if (this.transcriptType === 'popup' || this.transcriptType === 'external') {
-				 this.injectTranscriptArea();
-					deferred.resolve();
+				this.injectTranscriptArea();
+				deferred.resolve();
 			}
 			else if (this.transcriptType === 'manual') {
 				this.setupManualTranscript();
@@ -34,7 +34,7 @@
 		return promise;
 	};
 
-	AblePlayer.prototype.injectTranscriptArea = function() {
+	AblePlayer.prototype.injectTranscriptArea = function () {
 
 		var thisObj, $autoScrollLabel, $languageSelectWrapper, $languageSelectLabel, i, $option;
 
@@ -50,7 +50,7 @@
 		});
 
 		this.$transcriptDiv = $('<div>', {
-			'class' : 'able-transcript'
+			'class': 'able-transcript'
 		});
 
 		// Add auto Scroll checkbox
@@ -59,9 +59,9 @@
 			'type': 'checkbox'
 		});
 		$autoScrollLabel = $('<label>', {
-				'for': 'autoscroll-transcript-checkbox-' + this.mediaId
+			'for': 'autoscroll-transcript-checkbox-' + this.mediaId
 		}).text(this.tt.autoScroll);
-		this.$transcriptToolbar.append($autoScrollLabel,this.$autoScrollTranscriptCheckbox);
+		this.$transcriptToolbar.append($autoScrollLabel, this.$autoScrollTranscriptCheckbox);
 
 		// Add transcript search input
 		this.$searchTranslationInput = $('<input>', {
@@ -77,28 +77,28 @@
 		// Add field for selecting a transcript language
 		// Only necessary if there is more than one language
 		if (this.captions.length > 1) {
-			$languageSelectWrapper = $('<div>',{
+			$languageSelectWrapper = $('<div>', {
 				'class': 'transcript-language-select-wrapper'
 			});
-			$languageSelectLabel = $('<label>',{
+			$languageSelectLabel = $('<label>', {
 				'for': 'transcript-language-select-' + this.mediaId
 			}).text(this.tt.language);
-			this.$transcriptLanguageSelect = $('<select>',{
+			this.$transcriptLanguageSelect = $('<select>', {
 				'id': 'transcript-language-select-' + this.mediaId
 			});
-			for (i=0; i < this.captions.length; i++) {
-				$option = $('<option></option>',{
+			for (i = 0; i < this.captions.length; i++) {
+				$option = $('<option></option>', {
 					value: this.captions[i]['language'],
 					lang: this.captions[i]['language']
 				}).text(this.captions[i]['label']);
 				if (this.captions[i]['def']) {
-					$option.prop('selected',true);
-				 }
+					$option.prop('selected', true);
+				}
 				this.$transcriptLanguageSelect.append($option);
-			 }
+			}
 		}
 		if ($languageSelectWrapper) {
-			$languageSelectWrapper.append($languageSelectLabel,this.$transcriptLanguageSelect);
+			$languageSelectWrapper.append($languageSelectLabel, this.$transcriptLanguageSelect);
 			this.$transcriptToolbar.append($languageSelectWrapper);
 		}
 		this.$transcriptArea.append(this.$transcriptToolbar, this.$transcriptDiv);
@@ -117,7 +117,7 @@
 			this.initDragDrop('transcript');
 			if (this.prefTranscript === 1) {
 				// transcript is on. Go ahead and position it
-				this.positionDraggableWindow('transcript',this.getDefaultWidth('transcript'));
+				this.positionDraggableWindow('transcript', this.getDefaultWidth('transcript'));
 			}
 		}
 
@@ -127,7 +127,7 @@
 		}
 	};
 
-	AblePlayer.prototype.addTranscriptAreaEvents = function() {
+	AblePlayer.prototype.addTranscriptAreaEvents = function () {
 
 		var thisObj = this;
 
@@ -151,22 +151,22 @@
 
 		if (typeof this.$transcriptLanguageSelect !== 'undefined') {
 
-			this.$transcriptLanguageSelect.on('click mousedown',function (e) {
+			this.$transcriptLanguageSelect.on('click mousedown', function (e) {
 				// execute default behavior
 				// prevent propagation of mouse event to toolbar or window
 				e.stopPropagation();
 			});
 
-			this.$transcriptLanguageSelect.on('change',function () {
+			this.$transcriptLanguageSelect.on('change', function () {
 
 				var language = thisObj.$transcriptLanguageSelect.val();
 
-				thisObj.syncTrackLanguages('transcript',language);
+				thisObj.syncTrackLanguages('transcript', language);
 			});
 		}
 	};
 
-	AblePlayer.prototype.transcriptSrcHasRequiredParts = function() {
+	AblePlayer.prototype.transcriptSrcHasRequiredParts = function () {
 
 		// check the external transcript to be sure it has all required components
 		// return true or false
@@ -188,7 +188,7 @@
 		return false;
 	}
 
-	AblePlayer.prototype.setupManualTranscript = function() {
+	AblePlayer.prototype.setupManualTranscript = function () {
 
 		var $autoScrollInput, $autoScrollLabel;
 
@@ -197,7 +197,7 @@
 			'type': 'checkbox'
 		});
 		$autoScrollLabel = $('<label>', {
-				'for': 'autoscroll-transcript-checkbox-' + this.mediaId
+			'for': 'autoscroll-transcript-checkbox-' + this.mediaId
 		}).text(this.tt.autoScroll);
 
 		// Add an auto-scroll checkbox to the toolbar.
@@ -206,7 +206,7 @@
 
 	};
 
-	AblePlayer.prototype.setupManualTranscriptSearch = function() {
+	AblePlayer.prototype.setupManualTranscriptSearch = function () {
 
 		var $searchTranslationInput;
 		var $searchTranslationInput = $('<input>', {
@@ -220,7 +220,7 @@
 		this.$transcriptToolbar.append(this.$searchTranslationInput);
 	};
 
-	AblePlayer.prototype.updateTranscript = function() {
+	AblePlayer.prototype.updateTranscript = function () {
 
 		if (!this.transcriptType) {
 			return;
@@ -287,8 +287,8 @@
 			this.$transcriptDiv.html(div);
 			// reset transcript selected <option> to this.transcriptLang
 			if (this.$transcriptLanguageSelect) {
-				this.$transcriptLanguageSelect.find('option:selected').prop('selected',false);
-				this.$transcriptLanguageSelect.find('option[lang=' + this.transcriptLang + ']').prop('selected',true);
+				this.$transcriptLanguageSelect.find('option:selected').prop('selected', false);
+				this.$transcriptLanguageSelect.find('option[lang=' + this.transcriptLang + ']').prop('selected', true);
 			}
 		}
 
@@ -296,7 +296,7 @@
 
 		// Make transcript tabbable if preference is turned on.
 		if (this.prefTabbable === 1) {
-			this.$transcriptDiv.find('span.able-transcript-seekpoint').attr('tabindex','0');
+			this.$transcriptDiv.find('span.able-transcript-seekpoint').attr('tabindex', '0');
 		}
 
 		// handle clicks on text within transcript
@@ -304,7 +304,7 @@
 		// Pressing Enter on an element that is not natively clickable does NOT trigger click()
 		// Keydown events are handled elsehwere, both globally (ableplayer-base.js) and locally (event.js)
 		if (this.$transcriptArea.length > 0) {
-			this.$transcriptArea.find('span.able-transcript-seekpoint').click(function(e) {
+			this.$transcriptArea.find('span.able-transcript-seekpoint').click(function (e) {
 				thisObj.seekTrigger = 'transcript';
 				var spanStart = parseFloat($(this).attr('data-start'));
 				// Add a tiny amount so that we're inside the span.
@@ -329,14 +329,19 @@
 			return;
 		}
 
-		// Highlight the current transcript item.
-		this.$transcriptArea.find('span.able-transcript-seekpoint').each(function() {
+		// remove all previous highlights before adding one to current span
+		this.$transcriptArea.find('.able-search-highlight').removeClass('able-search-highlight');
 
-			var transcriptText = $(this).text();
-			if (transcriptText.indexOf(keyword) !== -1) {
-				$(this).addClass('able-search-highlight');
-			}
-		});
+		if (keyword && keyword !== '') {
+			// Highlight the current transcript item.
+			this.$transcriptArea.find('span.able-transcript-seekpoint').each(function () {
+				var transcriptText = $(this).text();
+
+				if (transcriptText.indexOf(keyword) !== -1) {
+					$(this).addClass('able-search-highlight');
+				}
+			});
+		}
 	};
 
 	AblePlayer.prototype.highlightTranscript = function (currentTime) {
@@ -353,7 +358,7 @@
 		currentTime = parseFloat(currentTime);
 
 		// Highlight the current transcript item.
-		this.$transcriptArea.find('span.able-transcript-seekpoint').each(function() {
+		this.$transcriptArea.find('span.able-transcript-seekpoint').each(function () {
 			start = parseFloat($(this).attr('data-start'));
 			end = parseFloat($(this).attr('data-end'));
 			// be sure this isn't a chapter (don't highlight chapter headings)
@@ -383,7 +388,7 @@
 		}
 	};
 
-	AblePlayer.prototype.generateTranscript = function(chapters, captions, descriptions) {
+	AblePlayer.prototype.generateTranscript = function (chapters, captions, descriptions) {
 
 		var thisObj = this;
 
@@ -438,7 +443,7 @@
 		var nextCap = 0;
 		var nextDesc = 0;
 
-		var addChapter = function(div, chap) {
+		var addChapter = function (div, chap) {
 
 			if (chapterHeadingNumber <= 6) {
 				var chapterHeading = 'h' + chapterHeadingNumber.toString();
@@ -447,7 +452,7 @@
 				var chapterHeading = 'div';
 			}
 
-			var $chapterHeadingTag = $('<' + chapterHeading + '>',{
+			var $chapterHeadingTag = $('<' + chapterHeading + '>', {
 				'class': 'able-transcript-chapter-heading'
 			});
 			if (chapterHeadingNumber > 6) {
@@ -457,7 +462,7 @@
 				});
 			}
 
-			var flattenComponentForChapter = function(comp) {
+			var flattenComponentForChapter = function (comp) {
 
 				var result = [];
 				if (comp.type === 'string') {
@@ -471,7 +476,7 @@
 				return result;
 			}
 
-			var $chapSpan = $('<span>',{
+			var $chapSpan = $('<span>', {
 				'class': 'able-transcript-seekpoint'
 			});
 			for (var i = 0; i < chap.components.children.length; i++) {
@@ -487,18 +492,18 @@
 			div.append($chapterHeadingTag);
 		};
 
-		var addDescription = function(div, desc) {
+		var addDescription = function (div, desc) {
 			var $descDiv = $('<div>', {
 				'class': 'able-transcript-desc'
 			});
-			var $descHiddenSpan = $('<span>',{
+			var $descHiddenSpan = $('<span>', {
 				'class': 'able-hidden'
 			});
 			$descHiddenSpan.attr('lang', thisObj.lang);
 			$descHiddenSpan.text(thisObj.tt.prefHeadingDescription + ': ');
 			$descDiv.append($descHiddenSpan);
 
-			var flattenComponentForDescription = function(comp) {
+			var flattenComponentForDescription = function (comp) {
 
 				var result = [];
 				if (comp.type === 'string') {
@@ -512,7 +517,7 @@
 				return result;
 			}
 
-			var $descSpan = $('<span>',{
+			var $descSpan = $('<span>', {
 				'class': 'able-transcript-seekpoint'
 			});
 			for (var i = 0; i < desc.components.children.length; i++) {
@@ -528,13 +533,13 @@
 			div.append($descDiv);
 		};
 
-		var addCaption = function(div, cap) {
+		var addCaption = function (div, cap) {
 
-			var $capSpan = $('<span>',{
+			var $capSpan = $('<span>', {
 				'class': 'able-transcript-seekpoint able-transcript-caption'
 			});
 
-			var flattenComponentForCaption = function(comp) {
+			var flattenComponentForCaption = function (comp) {
 
 				var result = [];
 
@@ -606,7 +611,7 @@
 					result = result.concat(flattenString(comp.value));
 				}
 				else if (comp.type === 'v') {
-					var $vSpan = $('<span>',{
+					var $vSpan = $('<span>', {
 						'class': 'able-unspoken'
 					});
 					$vSpan.text('(' + comp.value + ')');
@@ -632,7 +637,7 @@
 						}
 					}
 					if (comp.type === 'b' || comp.type == 'i') {
-						result.push($tag,' ');
+						result.push($tag, ' ');
 					}
 				}
 				else {
@@ -650,7 +655,7 @@
 					if (typeof result === 'string') {
 						if (thisObj.lyricsMode) {
 							// add <br> BETWEEN each caption and WITHIN each caption (if payload includes "\n")
-							result = result.replace('\n','<br>') + '<br>';
+							result = result.replace('\n', '<br>') + '<br>';
 						}
 						else {
 							// just add a space between captions
@@ -671,19 +676,19 @@
 
 			if ((nextChapter < chapters.length) && (nextDesc < descriptions.length) && (nextCap < captions.length)) {
 				// they all three have content
-				var firstStart = Math.min(chapters[nextChapter].start,descriptions[nextDesc].start,captions[nextCap].start);
+				var firstStart = Math.min(chapters[nextChapter].start, descriptions[nextDesc].start, captions[nextCap].start);
 			}
 			else if ((nextChapter < chapters.length) && (nextDesc < descriptions.length)) {
 				// chapters & descriptions have content
-				var firstStart = Math.min(chapters[nextChapter].start,descriptions[nextDesc].start);
+				var firstStart = Math.min(chapters[nextChapter].start, descriptions[nextDesc].start);
 			}
 			else if ((nextChapter < chapters.length) && (nextCap < captions.length)) {
 				// chapters & captions have content
-				var firstStart = Math.min(chapters[nextChapter].start,captions[nextCap].start);
+				var firstStart = Math.min(chapters[nextChapter].start, captions[nextCap].start);
 			}
 			else if ((nextDesc < descriptions.length) && (nextCap < captions.length)) {
 				// descriptions & captions have content
-				var firstStart = Math.min(descriptions[nextDesc].start,captions[nextCap].start);
+				var firstStart = Math.min(descriptions[nextDesc].start, captions[nextCap].start);
 			}
 			else {
 				var firstStart = null;
@@ -721,7 +726,7 @@
 		var $components = $main.children();
 		var spanCount = 0;
 		var openBlock = true;
-		$components.each(function() {
+		$components.each(function () {
 			if ($(this).hasClass('able-transcript-caption')) {
 				if ($(this).text().indexOf('[') !== -1 || $(this).text().indexOf('(') !== -1) {
 					// this caption includes a bracket or parenth. Start a new block
