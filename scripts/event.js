@@ -28,7 +28,7 @@
 				}
 				// do all the usual time-sync stuff during playback
 				if (thisObj.prefSearchTranscript === 1) {
-					thisObj.highlightSearchTranscript(thisObj);
+					thisObj.highlightSearchTranscript();
 				}
 				thisObj.updateCaption(thisObj.elapsed);
 				thisObj.showDescription(thisObj.elapsed);
@@ -167,7 +167,7 @@
 		}).on('tracking', function (e, position) {
 			// Scrub transcript, captions, and metadata.
 			thisObj.highlightTranscript(position);
-			thisObj.highlightSearchTranscript(position);
+			thisObj.highlightSearchTranscript();
 			thisObj.updateCaption(position);
 			thisObj.showDescription(position);
 			thisObj.updateChapter(thisObj.convertChapterTimeToVideoTime(position));

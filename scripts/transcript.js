@@ -63,6 +63,17 @@
 		}).text(this.tt.autoScroll);
 		this.$transcriptToolbar.append($autoScrollLabel,this.$autoScrollTranscriptCheckbox);
 
+		// Add transcript search input
+		this.$searchTranslationInput = $('<input>', {
+			'id': 'transcript-search-' + this.mediaId,
+			'type': 'text',
+			'placeholder': 'Search',
+			'class': 'transcript-search-input'
+		});
+		// Add an input box to the toolbar for search.
+		this.$transcriptToolbar.append(this.$searchTranslationInput);
+
+
 		// Add field for selecting a transcript language
 		// Only necessary if there is more than one language
 		if (this.captions.length > 1) {
@@ -122,6 +133,10 @@
 
 		this.$autoScrollTranscriptCheckbox.click(function () {
 			thisObj.handleTranscriptLockToggle(thisObj.$autoScrollTranscriptCheckbox.prop('checked'));
+		});
+
+		this.$searchTranslationInput.keyup(function (ev) {
+			thisObj.highlightSearchTranscript(ev.currentTarget.value);
 		});
 
 		this.$transcriptDiv.on('mousewheel DOMMouseScroll click scroll', function (e) {
@@ -308,10 +323,7 @@
 		}
 	};
 
-	AblePlayer.prototype.highlightSearchTranscript = function (player) {
-
-		var searchKeyword = 'in';
-		// Show highlight in transcript marking current caption.
+	AblePlayer.prototype.highlightSearchTranscript = function (keyword) {
 
 		if (!this.transcriptType) {
 			return;
@@ -321,30 +333,9 @@
 		this.$transcriptArea.find('span.able-transcript-seekpoint').each(function() {
 
 			var transcriptText = $(this).text();
-			if (transcriptText.indexOf(searchKeyword) !== -1) {
+			if (transcriptText.indexOf(keyword) !== -1) {
 				$(this).addClass('able-search-highlight');
 			}
-			// start = parseFloat($(this).attr('data-start'));
-			// end = parseFloat($(this).attr('data-end'));
-			// // be sure this isn't a chapter (don't highlight chapter headings)
-			// if ($(this).parent().hasClass('able-transcript-chapter-heading')) {
-			// 	isChapterHeading = true;
-			// }
-			// else {
-			// 	isChapterHeading = false;
-			// }
-
-			// if (currentTime >= start && currentTime <= end && !isChapterHeading) {
-
-			// 	// If this item isn't already highlighted, it should be
-			// 	if (!($(this).hasClass('able-search-highlight'))) {
-			// 		// remove all previous highlights before adding one to current span
-			// 		thisObj.$transcriptArea.find('.able-search-highlight').removeClass('able-search-highlight');
-			// 		$(this).addClass('able-search-highlight');
-			// 		thisObj.movingHighlight = true;
-			// 	}
-			// 	return false;
-			// }
 		});
 	};
 

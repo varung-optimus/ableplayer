@@ -1557,6 +1557,10 @@
 		this.refreshControls('transcript');
 	};
 
+	AblePlayer.prototype.handleSearchTranscript = function (val) {
+		debugger
+	};
+
 
 	AblePlayer.prototype.showTooltip = function($tooltip) {
 
