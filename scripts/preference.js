@@ -144,6 +144,12 @@
 			'default': 1 // on because many users can benefit
 		});
 		prefs.push({
+			'name': 'prefSearchTranscript', // search within the transcript
+			'label': this.tt.prefSearchTranscript,
+			'group': 'transcript',
+			'default': 1 // on because many users can benefit
+		});
+		prefs.push({
 			'name': 'prefAutoScrollTranscript',
 			'label': null,
 			'group': 'transcript',
@@ -1047,6 +1053,12 @@
 		if (this.prefHighlight === 0) {
 			// user doesn't want highlights; remove any existing highlights
 			this.$transcriptDiv.find('span').removeClass('able-highlight');
+		}
+
+		// search transcript
+		if (this.prefSearchTranscript === 0) {
+			// user doesn't want search and search highlights; remove any existing highlights
+			this.$transcriptDiv.find('span').removeClass('able-search-highlight');
 		}
 
 		// Re-initialize caption and description in case relevant settings have changed

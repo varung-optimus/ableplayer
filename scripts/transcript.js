@@ -23,6 +23,7 @@
 			}
 			else if (this.transcriptType === 'manual') {
 				this.setupManualTranscript();
+				this.setupManualTranscriptSearch();
 				deferred.resolve();
 			}
 		}
@@ -51,8 +52,6 @@
 		this.$transcriptDiv = $('<div>', {
 			'class' : 'able-transcript'
 		});
-
-		// Transcript toolbar content
 
 		// Add auto Scroll checkbox
 		this.$autoScrollTranscriptCheckbox = $('<input>', {
@@ -192,6 +191,20 @@
 
 	};
 
+	AblePlayer.prototype.setupManualTranscriptSearch = function() {
+
+		var $searchTranslationInput;
+		var $searchTranslationInput = $('<input>', {
+			'id': 'transcript-search-' + this.mediaId,
+			'type': 'text',
+			'placeholder': 'Search',
+			'class': 'transcript-search-input'
+		});
+		// Add an input box to the toolbar for search.
+		this.$searchTranslationInput = $searchTranslationInput;
+		this.$transcriptToolbar.append(this.$searchTranslationInput);
+	};
+
 	AblePlayer.prototype.updateTranscript = function() {
 
 		if (!this.transcriptType) {
@@ -293,6 +306,46 @@
 				}
 			});
 		}
+	};
+
+	AblePlayer.prototype.highlightSearchTranscript = function (player) {
+
+		var searchKeyword = 'in';
+		// Show highlight in transcript marking current caption.
+
+		if (!this.transcriptType) {
+			return;
+		}
+
+		// Highlight the current transcript item.
+		this.$transcriptArea.find('span.able-transcript-seekpoint').each(function() {
+
+			var transcriptText = $(this).text();
+			if (transcriptText.indexOf(searchKeyword) !== -1) {
+				$(this).addClass('able-search-highlight');
+			}
+			// start = parseFloat($(this).attr('data-start'));
+			// end = parseFloat($(this).attr('data-end'));
+			// // be sure this isn't a chapter (don't highlight chapter headings)
+			// if ($(this).parent().hasClass('able-transcript-chapter-heading')) {
+			// 	isChapterHeading = true;
+			// }
+			// else {
+			// 	isChapterHeading = false;
+			// }
+
+			// if (currentTime >= start && currentTime <= end && !isChapterHeading) {
+
+			// 	// If this item isn't already highlighted, it should be
+			// 	if (!($(this).hasClass('able-search-highlight'))) {
+			// 		// remove all previous highlights before adding one to current span
+			// 		thisObj.$transcriptArea.find('.able-search-highlight').removeClass('able-search-highlight');
+			// 		$(this).addClass('able-search-highlight');
+			// 		thisObj.movingHighlight = true;
+			// 	}
+			// 	return false;
+			// }
+		});
 	};
 
 	AblePlayer.prototype.highlightTranscript = function (currentTime) {

@@ -968,6 +968,14 @@ ul.able-popup {
 .able-highlight {
 	background: #FF6; /* light yellow */
 }
+
+.transcript-search-input {
+  float: right;
+}
+.able-search-highlight {
+  background: blue; /* blue */
+  color: white;
+}
 .able-previous {
 	background: black !important;
 	font-style: italic;
