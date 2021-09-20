@@ -338,17 +338,15 @@
 		
 		if (keyword && keyword !== '') {
 
-			this.$transcriptArea.find('span.able-transcript-seekpoint:contains("' + keyword + '")').html(function (_, html) {
+			this.$transcriptArea.find('span.able-transcript-seekpoint').html(function (_, html) {
 				var reg;
 				if (!exactMatch) {
-					reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'gi');
+					reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'ig');
 				} 
 				else {
 					reg = new RegExp('^' + keyword + '$', 'g');
 				}
-				// var text = $(item).text();
-				return html.replace(reg, '<span class="able-search-highlight">$1</span>', html);
-				// $(this).html(replacedText);
+				return html.replace(reg, '<span class="able-search-highlight">$1</span>');
 			});
 
 			// .text(function (_, text) {
