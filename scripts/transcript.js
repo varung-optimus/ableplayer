@@ -330,16 +330,12 @@
 		}
 
 		// remove all previous highlights before adding one to current span
-		this.$transcriptArea.find('.able-search-highlight').removeClass('able-search-highlight');
+		this.$transcriptArea.find('.able-search-highlight').contents().unwrap();
 
 		if (keyword && keyword !== '') {
-			// Highlight the current transcript item.
-			this.$transcriptArea.find('span.able-transcript-seekpoint').each(function () {
-				var transcriptText = $(this).text();
-
-				if (transcriptText.indexOf(keyword) !== -1) {
-					$(this).addClass('able-search-highlight');
-				}
+			this.$transcriptArea.find('span.able-transcript-seekpoint:contains("' + keyword + '")').html(function (_, html) {
+				var reg = new RegExp('(' + keyword + ')', 'gi');
+				return html.replace(reg, '<span class="able-search-highlight">$1</span>', html)
 			});
 		}
 	};
