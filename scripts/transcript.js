@@ -66,7 +66,7 @@
 		// Add transcript search input
 		this.$searchTranslationInput = $('<input>', {
 			'id': 'transcript-search-' + this.mediaId,
-			'type': 'text',
+			'type': 'search',
 			'placeholder': 'Search',
 			'class': 'transcript-search-input'
 		});
@@ -133,6 +133,10 @@
 
 		this.$autoScrollTranscriptCheckbox.click(function () {
 			thisObj.handleTranscriptLockToggle(thisObj.$autoScrollTranscriptCheckbox.prop('checked'));
+		});
+
+		this.$searchTranslationInput.on('search', function (ev) {
+			thisObj.highlightSearchTranscript(ev.currentTarget.value);
 		});
 
 		this.$searchTranslationInput.keyup(function (ev) {
@@ -211,7 +215,7 @@
 		var $searchTranslationInput;
 		var $searchTranslationInput = $('<input>', {
 			'id': 'transcript-search-' + this.mediaId,
-			'type': 'text',
+			'type': 'search',
 			'placeholder': 'Search',
 			'class': 'transcript-search-input'
 		});
@@ -324,19 +328,34 @@
 	};
 
 	AblePlayer.prototype.highlightSearchTranscript = function (keyword) {
-
+		var exactMatch = false;
 		if (!this.transcriptType) {
 			return;
 		}
 
 		// remove all previous highlights before adding one to current span
 		this.$transcriptArea.find('.able-search-highlight').contents().unwrap();
-
+		
 		if (keyword && keyword !== '') {
+
 			this.$transcriptArea.find('span.able-transcript-seekpoint:contains("' + keyword + '")').html(function (_, html) {
-				var reg = new RegExp('(' + keyword + ')', 'gi');
-				return html.replace(reg, '<span class="able-search-highlight">$1</span>', html)
+				var reg;
+				if (!exactMatch) {
+					reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'gi');
+				} 
+				else {
+					reg = new RegExp('^' + keyword + '$', 'g');
+				}
+				// var text = $(item).text();
+				return html.replace(reg, '<span class="able-search-highlight">$1</span>', html);
+				// $(this).html(replacedText);
 			});
+
+			// .text(function (_, text) {
+			// 	var reg = new RegExp('(' + keyword + ')', 'gi');
+			// 	var replacedText = text.replace(reg, '<span class="able-search-highlight">$1</span>', html);
+			// 	$(this).html(replacedText);
+			// });
 		}
 	};
 
