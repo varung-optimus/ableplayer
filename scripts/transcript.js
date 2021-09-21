@@ -72,7 +72,7 @@
 		});
 		$searchTranslationCountLabel = $('<label>', {
 			'id': 'transcript-search-counter' + this.mediaId,
-			'class': 'transcript-search-counter'
+			'class': 'transcript-search-counter hidden'
 		});
 		// Add an input box to the toolbar for search.
 		this.$transcriptToolbar.append($searchTranslationCountLabel, this.$searchTranslationInput);
@@ -224,7 +224,7 @@
 		});
 		var $searchTranslationCountLabel = $('<label>', {
 			'id': 'transcript-search-counter' + this.mediaId,
-			'class': 'transcript-search-counter',
+			'class': 'transcript-search-counter hidden',
 			'title': 'Number of occurrences found'
 		});
 		// Add an input box to the toolbar for search.
@@ -358,7 +358,7 @@
 				return html.trim().replace(reg, '<span class="able-search-highlight">$1</span>');
 			});
 		}
-		this.$transcriptArea.find('.transcript-search-counter').text(counter);
+		this.$transcriptArea.find('.transcript-search-counter').removeClass('hidden').text(counter);
 	};
 
 	AblePlayer.prototype.highlightTranscript = function (currentTime) {

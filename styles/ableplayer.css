@@ -983,6 +983,9 @@ ul.able-popup {
   height: 14px;
   text-align: center;
 }
+.transcript-search-counter.hidden {
+  display: none;
+}
 .able-search-highlight {
   background: blue; /* blue */
   color: white;
