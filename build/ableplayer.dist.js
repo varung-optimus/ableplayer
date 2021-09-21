@@ -11153,8 +11153,12 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			'placeholder': 'Search',
 			'class': 'transcript-search-input'
 		});
+		$searchTranslationCountLabel = $('<label>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-counter'
+		});
 		// Add an input box to the toolbar for search.
-		this.$transcriptToolbar.append(this.$searchTranslationInput);
+		this.$transcriptToolbar.append($searchTranslationCountLabel, this.$searchTranslationInput);
 
 
 		// Add field for selecting a transcript language
@@ -11295,16 +11299,21 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 	AblePlayer.prototype.setupManualTranscriptSearch = function () {
 
-		var $searchTranslationInput;
 		var $searchTranslationInput = $('<input>', {
 			'id': 'transcript-search-' + this.mediaId,
 			'type': 'search',
 			'placeholder': 'Search',
 			'class': 'transcript-search-input'
 		});
+		var $searchTranslationCountLabel = $('<label>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-counter',
+			'title': 'Number of occurrences found'
+		});
 		// Add an input box to the toolbar for search.
 		this.$searchTranslationInput = $searchTranslationInput;
-		this.$transcriptToolbar.append(this.$searchTranslationInput);
+		this.$searchTranslationCountLabel = $searchTranslationCountLabel;
+		this.$transcriptToolbar.append(this.$searchTranslationCountLabel, this.$searchTranslationInput);
 	};
 
 	AblePlayer.prototype.updateTranscript = function () {
@@ -11412,32 +11421,27 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 
 	AblePlayer.prototype.highlightSearchTranscript = function (keyword) {
 		var exactMatch = false;
+		var reg = new RegExp('^(' + keyword + ')', 'ig');
+		var counter = 0;
+
 		if (!this.transcriptType) {
 			return;
 		}
+
+		if (!exactMatch) {
+			reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'ig');
+		} 
 
 		// remove all previous highlights before adding one to current span
 		this.$transcriptArea.find('.able-search-highlight').contents().unwrap();
 		
 		if (keyword && keyword !== '') {
-
 			this.$transcriptArea.find('span.able-transcript-seekpoint').html(function (_, html) {
-				var reg;
-				if (!exactMatch) {
-					reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'ig');
-				} 
-				else {
-					reg = new RegExp('^' + keyword + '$', 'g');
-				}
-				return html.replace(reg, '<span class="able-search-highlight">$1</span>');
+				counter += ((html.trim() || '').match(reg) || []).length;
+				return html.trim().replace(reg, '<span class="able-search-highlight">$1</span>');
 			});
-
-			// .text(function (_, text) {
-			// 	var reg = new RegExp('(' + keyword + ')', 'gi');
-			// 	var replacedText = text.replace(reg, '<span class="able-search-highlight">$1</span>', html);
-			// 	$(this).html(replacedText);
-			// });
 		}
+		this.$transcriptArea.find('.transcript-search-counter').text(counter);
 	};
 
 	AblePlayer.prototype.highlightTranscript = function (currentTime) {
