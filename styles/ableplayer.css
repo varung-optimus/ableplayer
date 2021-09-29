@@ -974,11 +974,8 @@ ul.able-popup {
 }
 .transcript-search-counter {
   float: right;
-  background: blue;
-  font-size: 10px;
   margin-left: 5px;
   padding: 3px;
-  border-radius: 50%;
   width: 14px;
   height: 14px;
   text-align: center;
