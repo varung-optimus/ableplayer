@@ -980,11 +980,24 @@ ul.able-popup {
   height: 14px;
   text-align: center;
 }
-.transcript-search-counter.hidden {
+.transcript-search-counter.hidden,
+.transcript-search-next.hidden,
+.transcript-search-prev.hidden {
   display: none;
 }
 .able-search-highlight {
   background: blue; /* blue */
+  color: white;
+}
+.transcript-search-next, .transcript-search-prev {
+  float: right;
+  border-radius: .25rem;
+  background: blue;
+  border: 1px solid #ccc;
+  color: #ccc;
+}
+.able-search-highlight--focussed {
+  background: orange; /* cyan */
   color: white;
 }
 .able-previous {

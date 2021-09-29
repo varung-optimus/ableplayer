@@ -74,8 +74,18 @@
 			'id': 'transcript-search-counter' + this.mediaId,
 			'class': 'transcript-search-counter hidden'
 		});
+		this.$searchTranslationPrevIcon = $('<label>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-prev hidden',
+			'text': '<'
+		});
+		this.$searchTranslationNextIcon = $('<label>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-next hidden',
+			'text': '>'
+		});
 		// Add an input box to the toolbar for search.
-		this.$transcriptToolbar.append($searchTranslationCountLabel, this.$searchTranslationInput);
+		this.$transcriptToolbar.append($searchTranslationNextIcon, $searchTranslationPrevIcon, $searchTranslationCountLabel, this.$searchTranslationInput);
 
 
 		// Add field for selecting a transcript language
@@ -145,6 +155,16 @@
 
 		this.$searchTranslationInput.keyup(function (ev) {
 			thisObj.highlightSearchTranscript(ev.currentTarget.value);
+		});
+
+		this.$searchTranslationPrevIcon.click(function (ev) {
+			// scroll next previous in view
+			thisObj.scrollSearchKeywordInView(false);
+		});
+
+		this.$searchTranslationNextIcon.click(function (ev) {
+			// scroll next previous in view
+			thisObj.scrollSearchKeywordInView(true);
 		});
 
 		this.$transcriptDiv.on('mousewheel DOMMouseScroll click scroll', function (e) {
@@ -227,10 +247,24 @@
 			'class': 'transcript-search-counter hidden',
 			'title': 'Number of occurrences found'
 		});
+		var $searchTranslationPrevIcon = $('<button>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-prev hidden',
+			'text': '<',
+			'title': 'Move to previous'
+		});
+		var $searchTranslationNextIcon = $('<button>', {
+			'id': 'transcript-search-counter' + this.mediaId,
+			'class': 'transcript-search-next hidden',
+			'text': '>',
+			'title': 'Move to next'
+		});
 		// Add an input box to the toolbar for search.
 		this.$searchTranslationInput = $searchTranslationInput;
 		this.$searchTranslationCountLabel = $searchTranslationCountLabel;
-		this.$transcriptToolbar.append(this.$searchTranslationCountLabel, this.$searchTranslationInput);
+		this.$searchTranslationPrevIcon = $searchTranslationPrevIcon;
+		this.$searchTranslationNextIcon = $searchTranslationNextIcon;
+		this.$transcriptToolbar.append($searchTranslationNextIcon, $searchTranslationPrevIcon, this.$searchTranslationCountLabel, this.$searchTranslationInput);
 	};
 
 	AblePlayer.prototype.updateTranscript = function () {
@@ -347,18 +381,37 @@
 
 		if (!exactMatch) {
 			reg = new RegExp('((?<!<[^>]*)' + keyword + '(?<![^>]*<))', 'ig');
-		} 
+		}
 
 		// remove all previous highlights before adding one to current span
 		this.$transcriptArea.find('.able-search-highlight').contents().unwrap();
-		
+
 		if (keyword && keyword !== '') {
 			this.$transcriptArea.find('span.able-transcript-seekpoint').html(function (_, html) {
 				counter += ((html.trim() || '').match(reg) || []).length;
 				return html.trim().replace(reg, '<span class="able-search-highlight">$1</span>');
 			});
 		}
+		this.currentSearchIndex = 0;
+		$(this.$transcriptArea.find('.able-search-highlight')[0]).addClass('able-search-highlight--focussed');
+		this.$transcriptArea.find('.transcript-search-next').removeClass('hidden');
+		this.$transcriptArea.find('.transcript-search-prev').removeClass('hidden');
 		this.$transcriptArea.find('.transcript-search-counter').removeClass('hidden').text(counter);
+	};
+
+	AblePlayer.prototype.scrollSearchKeywordInView = function (isNext) {
+		var items = this.$transcriptArea.find('.able-search-highlight');
+		$(items[this.currentSearchIndex]).removeClass('able-search-highlight--focussed');
+		if (!isNext) {
+			if (this.currentSearchIndex > 0) {
+				// previous item
+				this.currentSearchIndex--;
+			}
+		} else if (this.currentSearchIndex < items.length - 1) {
+			this.currentSearchIndex++;
+		}
+		items[this.currentSearchIndex].scrollIntoView(true);
+		$(items[this.currentSearchIndex]).addClass('able-search-highlight--focussed');
 	};
 
 	AblePlayer.prototype.highlightTranscript = function (currentTime) {
