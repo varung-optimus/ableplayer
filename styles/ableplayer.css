@@ -989,12 +989,18 @@ ul.able-popup {
   background: blue; /* blue */
   color: white;
 }
-.transcript-search-next, .transcript-search-prev {
+.able-window-toolbar .transcript-search-next, 
+.able-window-toolbar .transcript-search-prev {
   float: right;
   border-radius: .25rem;
   background: white;
   border: 1px solid #ccc;
   color: #333;
+  width: 16px;
+  text-align: center;
+  font-size: 12px;
+  height: 16px;
+  margin-top: 1px;
 }
 .able-search-highlight--focussed {
   background: orange; /* cyan */

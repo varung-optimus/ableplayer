@@ -70,7 +70,7 @@
 			'placeholder': 'Search',
 			'class': 'transcript-search-input'
 		});
-		$searchTranslationCountLabel = $('<label>', {
+		this.$searchTranslationCountLabel = $('<label>', {
 			'id': 'transcript-search-counter' + this.mediaId,
 			'class': 'transcript-search-counter hidden'
 		});
@@ -85,7 +85,7 @@
 			'text': '>'
 		});
 		// Add an input box to the toolbar for search.
-		this.$transcriptToolbar.append($searchTranslationNextIcon, $searchTranslationPrevIcon, $searchTranslationCountLabel, this.$searchTranslationInput);
+		this.$transcriptToolbar.append(this.$searchTranslationNextIcon, this.$searchTranslationPrevIcon, this.$searchTranslationCountLabel, this.$searchTranslationInput);
 
 
 		// Add field for selecting a transcript language
@@ -393,7 +393,10 @@
 			});
 		}
 		this.currentSearchIndex = 0;
-		$(this.$transcriptArea.find('.able-search-highlight')[0]).addClass('able-search-highlight--focussed');
+		var item = this.$transcriptArea.find('.able-search-highlight');
+		if (item && item.length > 0) {
+			$(item[0]).addClass('able-search-highlight--focussed');
+		}
 		this.$transcriptArea.find('.transcript-search-next').removeClass('hidden');
 		this.$transcriptArea.find('.transcript-search-prev').removeClass('hidden');
 		this.$transcriptArea.find('.transcript-search-counter').removeClass('hidden').text(counter);
