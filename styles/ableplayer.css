@@ -992,9 +992,9 @@ ul.able-popup {
 .transcript-search-next, .transcript-search-prev {
   float: right;
   border-radius: .25rem;
-  background: blue;
+  background: white;
   border: 1px solid #ccc;
-  color: #ccc;
+  color: #333;
 }
 .able-search-highlight--focussed {
   background: orange; /* cyan */
