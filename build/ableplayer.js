@@ -11482,7 +11482,10 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 		}
 		this.$transcriptArea.find('.transcript-search-next').removeClass('hidden');
 		this.$transcriptArea.find('.transcript-search-prev').removeClass('hidden');
-		this.$transcriptArea.find('.transcript-search-counter').removeClass('hidden').text(counter);
+		if (counter && counter > 0) {
+			this.$transcriptArea.find('.transcript-search-counter').removeClass('hidden').text(this.currentSearchIndex + 1 + '/' + counter);
+		}
+		this.counter = counter;
 	};
 
 	AblePlayer.prototype.scrollSearchKeywordInView = function (isNext) {
@@ -11497,6 +11500,7 @@ if (thisObj.useTtml && (trackSrc.endsWith('.xml') || trackText.startsWith('<?xml
 			this.currentSearchIndex++;
 		}
 		items[this.currentSearchIndex].scrollIntoView(true);
+		this.$transcriptArea.find('.transcript-search-counter').text(this.currentSearchIndex + 1 + '/' + this.counter);
 		$(items[this.currentSearchIndex]).addClass('able-search-highlight--focussed');
 	};
 

@@ -976,7 +976,6 @@ ul.able-popup {
   float: right;
   margin-left: 5px;
   padding: 3px;
-  width: 14px;
   height: 14px;
   text-align: center;
 }
@@ -1001,6 +1000,7 @@ ul.able-popup {
   font-size: 12px;
   height: 16px;
   margin-top: 1px;
+  margin-left: 4px;
 }
 .able-search-highlight--focussed {
   background: orange; /* cyan */
